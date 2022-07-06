@@ -7,7 +7,7 @@ https://github.com/microsoft/etl2pcapng
 
 The etl2pcapng has been embedded into the script with base64 encoding. You don't need to download it.
 
-Usage: pscap.ps1 IF_IP_ADDRESS [WORKING_FOLDER_PATH]
+Usage: psshark.ps1 IF_IP_ADDRESS [WORKING_FOLDER_PATH]
 
 Default working folder is c:\pscap
 
