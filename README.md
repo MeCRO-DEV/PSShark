@@ -14,3 +14,5 @@ Default working folder is c:\pscap
 Screenshot:
 
 ![image](https://user-images.githubusercontent.com/57880343/177475077-e6cfaf56-4f00-41f1-ba2a-fc44727b15fe.png)
+
+![](https://komarev.com/ghpvc/?username=MeCRO-DEV&color=green)
