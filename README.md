@@ -631,7 +631,6 @@ name to `c.Chain` and stores filter values with `AddApp`. Then add its keyword t
 ```
 PSShark.ps1                     the application: script + embedded C# core + XAML + icon
 README.md / README.pdf          this document
-CLAUDE.md                       working notes for AI coding assistants
 wireshark-icon-green.png        the application icon (embedded in the script as base64)
 PSPigeon.ps1                    the sibling project whose theme PSShark follows
 docs/images/                    screenshots used in this document
