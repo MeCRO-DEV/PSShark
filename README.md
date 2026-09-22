@@ -636,5 +636,3 @@ PSPigeon.ps1                    the sibling project whose theme PSShark follows
 docs/images/                    screenshots used in this document
 docs/samples/reassembly-demo.pcap   small synthetic capture with split HTTP/TLS/DNS messages
 ```
-
-**License:** not specified yet.
