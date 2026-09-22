@@ -1,9 +1,9 @@
 ﻿<#PSScriptInfo
 .VERSION 1.0
 .GUID ff783128-b039-4ea8-a0ef-49de6318807b
-.AUTHOR David Wang
+.AUTHOR MeCRO-DEV
 .COMPANYNAME MeCRO
-.COPYRIGHT David Wang
+.COPYRIGHT MeCRO-DEV
 .TAGS Wireshark packet capture network WPF
 .LICENSEURI
 .PROJECTURI
@@ -2004,22 +2004,25 @@ namespace PSShark
 
         static void Colorize(Packet p)
         {
-            p.Bg = "#FFFFFF"; p.Fg = "#12272E"; p.RuleName = "Default"; p.RuleExpr = "";
+            // Midnight Violet dark palette: each protocol family keeps a distinct, desaturated
+            // background so it reads on the dark grid; foreground defaults to a single light tint
+            // and is overridden only for rows that must stand out as a problem (Wireshark does the same).
+            p.Bg = "#20203F"; p.Fg = "#E8E8FF"; p.RuleName = "Default"; p.RuleExpr = "";
             string pr = p.Protocol;
             if (p.TcpNote != null && p.TcpNote != "TCP Keep-Alive" && p.TcpNote != "TCP Keep-Alive ACK")
-            { p.Bg = "#12272E"; p.Fg = "#FF5B5B"; p.RuleName = "Bad TCP"; p.RuleExpr = "tcp.analysis.flags && !tcp.analysis.window_update && !tcp.analysis.keep_alive && !tcp.analysis.keep_alive_ack"; return; }
-            if (pr == "HTTP") { p.Bg = "#E4FFC7"; p.RuleName = "HTTP"; p.RuleExpr = "http || tcp.port == 80 || http2"; return; }
+            { p.Bg = "#3A1414"; p.Fg = "#FF6B6B"; p.RuleName = "Bad TCP"; p.RuleExpr = "tcp.analysis.flags && !tcp.analysis.window_update && !tcp.analysis.keep_alive && !tcp.analysis.keep_alive_ack"; return; }
+            if (pr == "HTTP") { p.Bg = "#1F3A1A"; p.RuleName = "HTTP"; p.RuleExpr = "http || tcp.port == 80 || http2"; return; }
             bool tcp = (":" + p.Chain + ":").IndexOf(":tcp:") >= 0 || pr == "TCP" || pr.StartsWith("TLS") || pr == "SSL";
             if (tcp)
             {
-                if (p.Info != null && p.Info.IndexOf("[RST") >= 0) { p.Bg = "#A40000"; p.Fg = "#FFFF9C"; p.RuleName = "TCP RST"; p.RuleExpr = "tcp.flags.reset eq 1"; return; }
-                if (p.Info != null && (p.Info.IndexOf("[SYN") >= 0 || p.Info.IndexOf("[FIN") >= 0)) { p.Bg = "#A0A0A0"; p.RuleName = "TCP SYN/FIN"; p.RuleExpr = "tcp.flags & 0x02 || tcp.flags.fin == 1"; return; }
-                p.Bg = "#E7E6FF"; p.RuleName = "TCP"; p.RuleExpr = "tcp"; return;
+                if (p.Info != null && p.Info.IndexOf("[RST") >= 0) { p.Bg = "#5C0000"; p.Fg = "#FFD873"; p.RuleName = "TCP RST"; p.RuleExpr = "tcp.flags.reset eq 1"; return; }
+                if (p.Info != null && (p.Info.IndexOf("[SYN") >= 0 || p.Info.IndexOf("[FIN") >= 0)) { p.Bg = "#3A3A3A"; p.RuleName = "TCP SYN/FIN"; p.RuleExpr = "tcp.flags & 0x02 || tcp.flags.fin == 1"; return; }
+                p.Bg = "#26264D"; p.RuleName = "TCP"; p.RuleExpr = "tcp"; return;
             }
-            if (pr == "ICMP" || pr == "ICMPv6") { p.Bg = "#FCE0FF"; p.RuleName = "ICMP"; p.RuleExpr = "icmp || icmpv6"; return; }
-            if (pr == "ARP") { p.Bg = "#FAF0D7"; p.RuleName = "ARP"; p.RuleExpr = "arp"; return; }
-            if (pr == "OSPF") { p.Bg = "#FFF3D6"; p.RuleName = "Routing"; p.RuleExpr = "hsrp || eigrp || ospf || bgp || cdp || vrrp || carp || gvrp || igmp || ismp"; return; }
-            if ((":" + p.Chain + ":").IndexOf(":udp:") >= 0 || pr == "UDP") { p.Bg = "#DAEEFF"; p.RuleName = "UDP"; p.RuleExpr = "udp"; return; }
+            if (pr == "ICMP" || pr == "ICMPv6") { p.Bg = "#3A1F3A"; p.RuleName = "ICMP"; p.RuleExpr = "icmp || icmpv6"; return; }
+            if (pr == "ARP") { p.Bg = "#332B14"; p.RuleName = "ARP"; p.RuleExpr = "arp"; return; }
+            if (pr == "OSPF") { p.Bg = "#3D3015"; p.RuleName = "Routing"; p.RuleExpr = "hsrp || eigrp || ospf || bgp || cdp || vrrp || carp || gvrp || igmp || ismp"; return; }
+            if ((":" + p.Chain + ":").IndexOf(":udp:") >= 0 || pr == "UDP") { p.Bg = "#142A3D"; p.RuleName = "UDP"; p.RuleExpr = "udp"; return; }
             if (p.Destination == "Broadcast") { p.RuleName = "Broadcast"; p.RuleExpr = "eth[0] & 1"; }
         }
 
@@ -4854,17 +4857,6 @@ $script:stylesXaml = @'
         </Style.Triggers>
     </Style>
     <Style x:Key="RowPlain" TargetType="DataGridRow">
-        <Setter Property="Background" Value="White"/>
-        <Setter Property="Foreground" Value="#12272E"/>
-        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        <Style.Triggers>
-            <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="#552284"/>
-                <Setter Property="Foreground" Value="White"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style x:Key="RowDark" TargetType="DataGridRow">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="#E8E8FF"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -5796,7 +5788,7 @@ function Show-CaptureOptions {
 <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
 <TextBlock Grid.Row="0" Text="Select the network interface to capture from:" Foreground="Cyan" Margin="0,0,0,8"/>
 <DataGrid x:Name="dgIf" Grid.Row="1" Height="200" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" HeadersVisibility="Column"
-          GridLinesVisibility="None" CanUserAddRows="False" Background="#181735" BorderBrush="#2E2C6B" RowHeight="24" RowStyle="{StaticResource RowDark}"
+          GridLinesVisibility="None" CanUserAddRows="False" Background="#181735" BorderBrush="#2E2C6B" RowHeight="24" RowStyle="{StaticResource RowPlain}"
           HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
     <DataGrid.Columns>
         <DataGridTextColumn Header="Interface" Binding="{Binding Name}" Width="170" ElementStyle="{StaticResource CellText}"/>

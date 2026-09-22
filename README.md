@@ -10,6 +10,7 @@ application icon are all inside that single file.
 | | |
 |---|---|
 | **Version** | 1.0 |
+| **Author** | MeCRO-DEV |
 | **Platform** | Windows 10 / 11, Windows PowerShell 5.1 or PowerShell 7+ |
 | **Live capture** | Built-in `NetEventPacketCapture` module (needs Administrator) |
 | **Capture files** | Reads pcap and pcapng, writes pcap, exports pktmon-style text |
@@ -207,21 +208,23 @@ Other shortcuts: **Ctrl+/** moves the focus to the filter bar; **Enter** in the 
 | **Length** | Frame length on the wire |
 | **Info** | Wireshark-style summary, for example `443 -> 51945 [ACK] Seq=1 Ack=2 Win=255 Len=0` |
 
-Rows are coloured with Wireshark's default rules:
+Rows are coloured following Wireshark's rule categories, using a dark palette (each protocol family keeps its
+own dark background with light text, so it stays readable against the rest of the dark UI):
 
 | Colour | Traffic |
 |---|---|
-| Light purple | TCP |
-| Grey | TCP SYN / FIN |
-| Dark red | TCP RST |
-| Black on red text | TCP problems (retransmission, missing segment) |
-| Light blue | UDP (including DNS, DHCP, NTP) |
-| Light green | HTTP |
-| Light pink | ICMP and ICMPv6 |
-| Light yellow | ARP |
-| Cream | Routing protocols |
+| Dark indigo | TCP |
+| Dark grey | TCP SYN / FIN |
+| Deep red, amber text | TCP RST |
+| Dark red-brown, red text | TCP problems (retransmission, missing segment) |
+| Dark blue | UDP (including DNS, DHCP, NTP) |
+| Dark green | HTTP |
+| Dark plum | ICMP and ICMPv6 |
+| Dark amber-brown | ARP |
+| Dark gold | Routing protocols |
 
-**Colorize** in the View menu or toolbar switches the colouring off. The selected row is always purple.
+**Colorize** in the View menu or toolbar switches the colouring off (all rows use the same dark background and
+light text). The selected row is always purple.
 
 ![Filtering](docs/images/filter.png)
 
@@ -510,7 +513,7 @@ Reading and writing run on worker runspaces with progress reporting; a 410,900-p
 
 ### 6.9 User interface design
 
-- **Theme "Midnight Violet"**, taken from the author's PSPigeon project: window `#181735`, title bar `#0F0F4D`,
+- **Theme "Midnight Violet"**, modelled on the author's earlier PSPigeon project: window `#181735`, title bar `#0F0F4D`,
   buttons `#552284` turning `#FF4C70` on hover, cyan/yellow/lime accents, Courier New title text.
 - **Custom window chrome** (`WindowChrome`): borderless window with our own title bar and buttons that still resizes,
   snaps and maximises correctly.
@@ -631,8 +634,10 @@ name to `c.Chain` and stores filter values with `AddApp`. Then add its keyword t
 ```
 PSShark.ps1                     the application: script + embedded C# core + XAML + icon
 README.md / README.pdf          this document
+CLAUDE.md                       working notes for AI coding assistants
 wireshark-icon-green.png        the application icon (embedded in the script as base64)
-PSPigeon.ps1                    the sibling project whose theme PSShark follows
 docs/images/                    screenshots used in this document
 docs/samples/reassembly-demo.pcap   small synthetic capture with split HTTP/TLS/DNS messages
 ```
+
+**Copyright:** MeCRO-DEV. **License:** not specified yet.
